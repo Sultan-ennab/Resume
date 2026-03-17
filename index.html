@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sultan Ennab | Interactive Executive Resume</title>
+  <style>
+    :root {
+      --bg: #06162d;
+      --bg-grad-1: #071932;
+      --bg-grad-2: #031326;
+      --panel: rgba(8, 22, 43, 0.78);
+      --panel-2: rgba(13, 30, 56, 0.92);
+      --text: #eaf2fb;
+      --muted: #a8b8ce;
+      --line: rgba(147, 176, 216, 0.18);
+      --accent: #7ec8ff;
+      --accent-2: #9ad6ff;
+      --shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+      --radius: 22px;
+      --nav-bg: rgba(255,255,255,0.05);
+    }
+
+    body.light {
+      --bg: #eef4fb;
+      --bg-grad-1: #f7fbff;
+      --bg-grad-2: #e8f0fa;
+      --panel: rgba(255, 255, 255, 0.84);
+      --panel-2: rgba(255, 255, 255, 0.98);
+      --text: #132235;
+      --muted: #52657c;
+      --line: rgba(19, 34, 53, 0.12);
+      --accent: #156fb8;
+      --accent-2: #2d84cb;
+      --shadow: 0 18px 48px rgba(25, 53, 92, 0.12);
+      --nav-bg: rgba(21, 111, 184, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top center, rgba(69, 135, 221, 0.12), transparent 26%),
+        radial-gradient(circle at bottom center, rgba(29, 81, 164, 0.14), transparent 35%),
+        linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 42px));
+      margin: 34px auto 48px;
+    }
+
+    .hero {
+      z-index: 5;
+      position: relative;
+      overflow: visible;
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 30px 34px 28px;
+      backdrop-filter: blur(18px);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(115deg, rgba(126,200,255,0.12), transparent 30%, transparent 68%, rgba(126,200,255,0.10));
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-2);
+      opacity: 0.95;
+      margin-bottom: 12px;
+      font-weight: 700;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 4vw, 3.45rem);
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+
+    .title {
+      margin-top: 10px;
+      font-size: clamp(1.02rem, 1.8vw, 1.32rem);
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      max-width: 860px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.72;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.045);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .chip-icon { flex: 0 0 auto; opacity: 0.98; }
+    .large-icon { width: 22px; height: 22px; }
+    .xl-icon { width: 24px; height: 24px; }
+
+    .icon-only-chip {
+      width: 46px;
+      height: 46px;
+      justify-content: center;
+      padding: 0;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .email-icon { color: #8fd3ff; }
+    .linkedin-icon { color: #7cc4ff; }
+
+    .big-icon-chip {
+      padding: 10px 15px;
+      font-weight: 600;
+    }
+
+    .location-chip {
+      color: #ffd38a;
+      background: rgba(255, 211, 138, 0.08);
+      border-color: rgba(255, 211, 138, 0.22);
+    }
+
+    .location-chip span:last-child { color: var(--text); }
+
+    .phone-chip {
+      color: #91f0c2;
+      background: rgba(145, 240, 194, 0.08);
+      border-color: rgba(145, 240, 194, 0.22);
+    }
+
+    .phone-chip span:last-child { color: var(--text); }
+
+    body.light .icon-only-chip { background: rgba(21, 111, 184, 0.08); }
+    body.light .email-icon { color: #0f6db5; }
+    body.light .linkedin-icon { color: #0a66c2; }
+    body.light .location-chip {
+      color: #a56600;
+      background: rgba(245, 191, 72, 0.16);
+      border-color: rgba(165, 102, 0, 0.18);
+    }
+    body.light .phone-chip {
+      color: #0f8b57;
+      background: rgba(51, 181, 120, 0.12);
+      border-color: rgba(15, 139, 87, 0.18);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: auto auto auto 1fr auto;
+      gap: 10px;
+      margin: 22px 0 0;
+      align-items: center;
+    }
+
+    #themeToggle {
+      justify-self: end;
+      min-width: 170px;
+    }
+
+    button {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 18px 26px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.98rem;
+      line-height: 1;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+      box-shadow: none;
+      outline: none;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #94d7ff);
+      color: #082033;
+      border: 1px solid rgba(126, 200, 255, 0.22);
+    }
+
+    body.light .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #156fb8, #5ba6df);
+    }
+
+    .btn-secondary {
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.055);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .top-jump-menu {
+      position: relative;
+      z-index: 120;
+      overflow: visible;
+    }
+
+    .top-jump-menu summary {
+      appearance: none;
+      -webkit-appearance: none;
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 26px;
+      min-width: 270px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      line-height: 1;
+      color: var(--text);
+      user-select: none;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.055);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .top-jump-menu summary::-webkit-details-marker { display: none; }
+
+    .top-jump-caret {
+      color: var(--accent);
+      transition: transform .2s ease;
+    }
+
+    .top-jump-menu[open] .top-jump-caret { transform: rotate(180deg); }
+
+    .top-jump-links {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 270px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      box-shadow: var(--shadow);
+      z-index: 140;
+    }
+
+    .top-jump-links a {
+      text-decoration: none;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--nav-bg);
+      border: 1px solid var(--line);
+      font-size: 0.94rem;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+
+    .top-jump-links a:hover {
+      transform: translateX(2px);
+      border-color: rgba(126,200,255,0.35);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 330px minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .sidebar {
+      padding: 18px 18px 20px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .sidebar-section + .sidebar-section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .sidebar-profile-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 0.94rem;
+    }
+
+    .sidebar-section summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0;
+      margin: 0 0 12px;
+    }
+
+    .sidebar-section summary::-webkit-details-marker { display: none; }
+
+    .sidebar h3 {
+      margin: 0;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+    }
+
+    .sidebar-caret {
+      color: var(--accent);
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: transform .2s ease;
+      flex: 0 0 auto;
+    }
+
+    .sidebar-section[open] .sidebar-caret { transform: rotate(180deg); }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 0.94rem;
+    }
+
+    li + li { margin-top: 4px; }
+
+    .content {
+      display: grid;
+      gap: 14px;
+    }
+
+    details { overflow: visible; scroll-margin-top: 24px; }
+    details.card { padding: 0; }
+
+    .content > details > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .content > details > summary::-webkit-details-marker { display: none; }
+
+    .summary-text h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .summary-text p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .caret {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      color: var(--accent);
+      flex: 0 0 auto;
+      transition: transform .2s ease;
+      font-size: 0.95rem;
+    }
+
+    .content > details[open] .caret { transform: rotate(180deg); }
+
+    .details-body {
+      border-top: 1px solid var(--line);
+      padding: 18px 20px 20px;
+    }
+
+    .details-body p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .experience-item + .experience-item {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .role-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .role-head h3 {
+      margin: 0;
+      font-size: 1.02rem;
+    }
+
+    .org {
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .date {
+      color: var(--accent-2);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .muted-note {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    @media (max-width: 1200px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
+    @media (max-width: 1100px) {
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .actions {
+      display: flex;
+        flex-wrap: wrap;
+      }
+
+      #themeToggle {
+        justify-self: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 18px, 1180px); }
+      .hero { padding: 22px; border-radius: 22px; }
+      .content > details > summary, .details-body, .sidebar { padding-left: 18px; padding-right: 18px; }
+      .top-jump-links { min-width: min(280px, calc(100vw - 56px)); }
+      .actions { align-items: stretch; }
+      .top-jump-menu summary { min-width: 100%; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">AI-Enabled Technologies <span>|</span> Utility Software <span>|</span> Cybersecurity <span>|</span> Digital Transformation <span>|</span> Entrepreneurial</div>
+        <h1>Sultan Ennab</h1>
+        <div class="title">Chief Technology Officer</div>
+        <p class="lede">
+          Technology executive with 15+ years of experience leading software, AI, data, cloud, cybersecurity,
+          enterprise platforms, and digital transformation initiatives across utilities, smart grid, telecommunications,
+          financial services, and enterprise SaaS environments. Proven record building scalable organizations,
+          commercializing digital platforms, modernizing infrastructure, and aligning technology investment with
+          resilience, affordability, compliance, and long-term stakeholder value.
+        </p>
+        <div class="contact-row">
+          <a class="chip icon-only-chip" href="mailto:sultan.ennab@gmail.com" aria-label="Email Sultan Ennab" title="Email Sultan Ennab">
+            <svg class="chip-icon large-icon email-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" stroke="currentColor" stroke-width="1.9"/>
+              <path d="M5.5 7l6.5 5 6.5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="chip icon-only-chip" href="https://www.linkedin.com/in/sultanennab" target="_blank" rel="noreferrer" aria-label="LinkedIn profile" title="LinkedIn profile">
+            <svg class="chip-icon large-icon linkedin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.9"/>
+              <path d="M8 10v6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              <path d="M12 16v-3.1a1.9 1.9 0 0 1 3.8 0V16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              <circle cx="8" cy="7.5" r="1.1" fill="currentColor"/>
+            </svg>
+          </a>
+          <span class="chip big-icon-chip location-chip">
+            <svg class="chip-icon xl-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" stroke="currentColor" stroke-width="1.9"/>
+              <circle cx="12" cy="10" r="2.2" fill="currentColor"/>
+            </svg>
+            <span>Wakefield, MA</span>
+          </span>
+          <span class="chip big-icon-chip phone-chip">
+            <svg class="chip-icon xl-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7.8 4.8h2.1l1 3.1-1.6 1.5a14.8 14.8 0 0 0 5.3 5.3l1.5-1.6 3.1 1v2.1a1.8 1.8 0 0 1-2 1.8A15.4 15.4 0 0 1 6 6.8a1.8 1.8 0 0 1 1.8-2Z" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>617-405-4455</span>
+          </span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="expandAll" type="button">Expand all sections</button>
+          <button class="btn-secondary" id="collapseAll" type="button">Collapse all sections</button>
+          <details class="top-jump-menu">
+            <summary>
+              <span>Jump to section</span>
+              <span class="top-jump-caret">⌄</span>
+            </summary>
+            <div class="top-jump-links">
+              <a href="#qualifications">Select Qualifications</a>
+              <a href="#impact">Recent Executive Impact</a>
+              <a href="#experience">Experience</a>
+              <a href="#education">Education &amp; Development</a>
+            </div>
+          </details>
+          <button class="btn-secondary" id="themeToggle" type="button">☀️ Light mode</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="sidebar card">
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Executive Profile</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <p class="sidebar-profile-text">Technology executive with strong business acumen and deep experience across software, AI, data, cloud, cybersecurity, and enterprise platforms. Proven record in building and scaling high-performing organizations, modernizing technology environments, commercializing digital solutions, and aligning technology strategy with growth, resilience, affordability, and long-term stakeholder value in mission-critical industries.</p>
+        </details>
+
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Executive Domains</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <ul>
+            <li>Technology strategy &amp; portfolio management</li>
+            <li>Enterprise Applications, ERP &amp; Digital Platforms</li>
+            <li>IT / OT partnership</li>
+            <li>Utility software &amp; grid modernization</li>
+            <li>Cybersecurity, risk &amp; resilience</li>
+            <li>AI, data governance &amp; responsible adoption</li>
+            <li>Critical infrastructure &amp; regulated environments</li>
+            <li>P&amp;L / budget stewardship</li>
+            <li>Vendor / partner management</li>
+            <li>Global team leadership</li>
+          </ul>
+        </details>
+
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Industries</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <ul>
+            <li>Energy, smart grid &amp; smart meters</li>
+            <li>AI, software &amp; IT</li>
+            <li>Human capital, HR &amp; payroll</li>
+            <li>Financial services</li>
+            <li>Telecom &amp; satellite</li>
+          </ul>
+        </details>
+
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Technology &amp; Platforms</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <ul>
+            <li>Mission-critical systems, SCADA, EMS, DMS, GIS</li>
+            <li>Analytics &amp; data platforms</li>
+            <li>Cloud, hybrid &amp; on-prem infrastructure</li>
+            <li>CIS, DER &amp; systems integration</li>
+            <li>SaaS, APIs &amp; platform architecture</li>
+          </ul>
+        </details>
+
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Governance, Standards &amp; Compliance</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <ul>
+            <li>NERC CIP, FERC &amp; CEII</li>
+            <li>ITIL, CISRT &amp; NIST</li>
+            <li>Agile, SAFe &amp; waterfall</li>
+            <li>DevOps, CI/CD &amp; QA/QC</li>
+            <li>Secure SDLC &amp; OWASP</li>
+          </ul>
+        </details>
+
+        <details class="sidebar-section" open>
+          <summary>
+            <h3>Affiliations</h3>
+            <span class="sidebar-caret">⌄</span>
+          </summary>
+          <ul>
+            <li>MIT Enterprise Forum</li>
+            <li>Boston and New York CTO Club</li>
+            <li>CTO Universe</li>
+          </ul>
+        </details>
+      </aside>
+
+      <div class="content">
+        <details class="card" open id="qualifications">
+          <summary>
+            <div class="summary-text">
+              <h2>Select Qualifications</h2>
+              <p>Core leadership themes, utility relevance, and transformation strengths.</p>
+            </div>
+            <div class="caret">⌄</div>
+          </summary>
+          <div class="details-body">
+            <ul>
+              <li>Executive technology leader with experience aligning enterprise IT, software platforms, infrastructure modernization, cybersecurity, and digital investments to reliability, resilience, affordability, and long-term stakeholder value.</li>
+              <li>Strong utility-sector background spanning grid modernization, transmission and distribution planning, GIS-enabled platforms, DER-related workflows, enterprise systems integration, and mission-critical digital capabilities.</li>
+              <li>Proven ability to build and scale high-performing organizations, strengthen governance and operating discipline, modernize IT and software environments, and advance responsible AI and data capabilities in regulated utility environments.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" open id="impact">
+          <summary>
+            <div class="summary-text">
+              <h2>Recent Executive Impact</h2>
+              <p>Commercial, operational, and organizational outcomes.</p>
+            </div>
+            <div class="caret">⌄</div>
+          </summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>Scaled organizations:</strong> scaled EPE’s Software Business Unit from 6 to 50 FTEs plus 25 contractors, with a plan to grow 120+ over in the next 18 months; previously led global organizations of 500+.</li>
+              <li><strong>Built and delivered revenue pipeline:</strong> positioned ENER-i for ~$6.5M booked over 18 months and ~$60.5M projected revenue over 5 years; grew GridUnity from ~$200K ARR to $2M ARR with expected year-end ARR of ~$3M and a path to ~$20M over 5 years.</li>
+              <li><strong>Operational transformation:</strong> delivered 6 grid planning solutions and drove 70%+ workflow efficiency gains through automation and AI-enabled tools.</li>
+              <li><strong>Risk, resilience &amp; governance:</strong> improved governance, infrastructure, and engineering controls to strengthen reliability, resilience, affordability, cybersecurity posture, and compliance alignment across utility-facing platforms.</li>
+              <li><strong>GridUnity:</strong> transformed the business from bespoke consulting services to a standardized, scalable SaaS product; scaled the organization by 85% and improved ARR by 45%.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="card" open id="experience">
+          <summary>
+            <div class="summary-text">
+              <h2>Experience</h2>
+              <p>Collapsible role history with highlights and scope.</p>
+            </div>
+            <div class="caret">⌄</div>
+          </summary>
+          <div class="details-body">
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>SVP, Head of Software Business Unit | Technology &amp; Digital Platforms</h3>
+                <span class="date">6/2024 – Present</span>
+              </div>
+              <div class="org">Electric Power Engineers (EPE)</div>
+              <p>Leads EPE’s Software Business Unit with responsibility for strategy, growth, productization, delivery, governance, organization design, and commercialization of software, AI-native, and data-driven solutions serving utility and grid modernization markets.</p>
+              <ul>
+                <li>Supported Unit4 ERP rollout as a key business and technology stakeholder, leading integration across HR/payroll, CRM, timekeeping, and related enterprise systems to improve process alignment and operational visibility.</li>
+                <li>Scaled the business unit from 6 to 50 FTEs plus 25 contractors, building the structure and capacity to support rapid growth.</li>
+                <li>Delivered 6 grid planning solutions across distribution and transmission, strengthening utility planning and grid modernization capabilities.</li>
+                <li>Grew revenue from roughly $200K ARR to $2M ARR, with ~$3M expected year-end ARR and a path to ~$20M over 5 years.</li>
+                <li>Positioned ENER-i with ~$6.5M booked over 18 months and a projected ~$60.5M opportunity over 5 years.</li>
+                <li>Improved consulting engineering workflows by 70%+ through automation and AI-enabled solutions.</li>
+                <li>Reduced cybersecurity, business continuity, and operational risk through cloud and infrastructure modernization aligned to NERC CIP, FERC-related, and CEII considerations.</li>
+              </ul>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>Chief Technology &amp; Product Officer</h3>
+                <span class="date">9/2021 – 5/2024</span>
+              </div>
+              <div class="org">GridUnity</div>
+              <p>Led product, software engineering, cloud operations, IT, customer success, and solution delivery for a utility-focused software business serving grid modernization, DER integration, interconnection, and planning use cases.</p>
+              <ul>
+                <li>Transformed the business from bespoke grid software and consulting services into standardized, scalable SaaS products and repeatable delivery models.</li>
+                <li>Scaled the organization by 85%, increased ARR by 45%, and helped position the company for an exit strategy through stronger productization, governance, and commercial focus.</li>
+                <li>Established cross-functional prioritization, governance, and standards across product, engineering, cloud operations, and customer delivery.</li>
+                <li>Worked closely with utility customers and operational stakeholders on grid modernization, DER integration, interconnection, planning workflows, platform integrations, and secure handling of utility data in regulated environments.</li>
+              </ul>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>Founder’s CEO Advisor to the Board</h3>
+                <span class="date">4/2019 – 9/2021</span>
+              </div>
+              <div class="org">Start-up / advisory role</div>
+              <p>Started, scaled the company, and became an advisor to the board on technology transformation strategy, product roadmap, application modernization, leadership alignment, and engineering operating model improvements.</p>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>SVP of Global Engineering</h3>
+                <span class="date">3/2018 – 4/2019</span>
+              </div>
+              <div class="org">S. T. Engineering iDirect</div>
+              <p>Led a 500+ person global technology organization spanning software, hardware, firmware, embedded systems, and cloud modernization delivery through Agile/SAFe execution, helping secure major contracts totaling more than $450M.</p>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>Senior Director of Software Development</h3>
+                <span class="date">7/2016 – 3/2018</span>
+              </div>
+              <div class="org">Aclara</div>
+              <p>Scaled the organization from 15 to 100+ globally distributed team members, transitioned the product suite from on-premises to cloud-native SaaS, improved release cadence by 60%, and supported positioning for the Hubbell acquisition.</p>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>Senior Director of Software Development</h3>
+                <span class="date">7/2012 – 7/2016</span>
+              </div>
+              <div class="org">UKG (formerly Kronos)</div>
+              <p>Built next-generation cloud-native SaaS platforms and improved delivery speed, quality, and scalability of the software platform, contributing to the company’s path toward a $17B valuation after a major investor transaction.</p>
+              <ul>
+                <li>Played a critical role in evaluating Kronos ERP, SAP, and defining the strategy and implementation roadmap to improve workforce operations, scalability, and enterprise alignment.</li>
+                <li>Advanced enterprise operating model maturity by aligning workforce systems strategy with broader platform scalability and cross-functional business needs.</li>
+              </ul>
+            </div>
+
+            <div class="experience-item">
+              <div class="role-head">
+                <h3>Director of Software Engineering &amp; Enterprise Architecture</h3>
+                <span class="date">6/1998 – 7/2012</span>
+              </div>
+              <div class="org">Fidelity Investments</div>
+              <p>Held progressively senior software and IT roles over 14.5 years, leading development and architecture of business-critical digital platforms across brokerage, workplace investing, HR/payroll, banking, and portfolio solutions serving 20M+ users.</p>
+              <ul>
+                <li>Led rollout of SAP and Oracle Fusion enterprise platforms, strengthening process integration, scalability, and operating efficiency.</li>
+                <li>Improved enterprise platform interoperability and business process consistency across complex financial and operational environments.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <details class="card" id="education">
+          <summary>
+            <div class="summary-text">
+              <h2>Education &amp; Professional Development</h2>
+              <p>Academic work, executive learning, and technical certifications.</p>
+            </div>
+            <div class="caret">⌄</div>
+          </summary>
+          <div class="details-body">
+            <h3>Education</h3>
+            <ul>
+              <li>MIT — pursuing a blended triple program in economics and development policy (in progress).</li>
+              <li>Prince Faisal University — bachelor’s degree in Electrical and Electronics Engineering (Dean’s List, 4.0 GPA).</li>
+            </ul>
+            <h3>Professional Development</h3>
+            <ul>
+              <li>MIT Professional Learning — AI and Machine Learning: Building Data Science Solutions (in progress)</li>
+              <li>MIT Sloan School of Management — Smart Start for Entrepreneurs; Transforming Your Leadership</li>
+              <li>Harvard University — Business Communication | Effective Communication | Academic Writing</li>
+              <li>Babson College — Executive Leadership and Influence</li>
+              <li>HP / ITIL Foundation Certification | IASSC — Six Sigma Certification</li>
+            </ul>
+            <p class="muted-note">A few lines in the source image were partially obscured, so this downloadable HTML preserves the structure and formatting while keeping the layout clean and editable.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const sections = Array.from(document.querySelectorAll('.content details, .sidebar .sidebar-section'));
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const jumpMenu = document.querySelector('.top-jump-menu');
+
+    document.getElementById('expandAll').addEventListener('click', () => sections.forEach(s => s.open = true));
+    document.getElementById('collapseAll').addEventListener('click', () => sections.forEach(s => s.open = false));
+
+    const setTheme = (theme) => {
+      body.classList.toggle('light', theme === 'light');
+      themeToggle.textContent = theme === 'light' ? '🌙 Dark mode' : '☀️ Light mode';
+      localStorage.setItem('resume-theme', theme);
+    };
+
+    const savedTheme = localStorage.getItem('resume-theme');
+    if (savedTheme) setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light') ? 'dark' : 'light';
+      setTheme(nextTheme);
+    });
+
+    document.querySelectorAll('.top-jump-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        jumpMenu.removeAttribute('open');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!jumpMenu.contains(e.target)) {
+        jumpMenu.removeAttribute('open');
+      }
+    });
+  </script>
+</body>
+</html>
